@@ -1,6 +1,6 @@
 workflows:
-  planetary-positions-unsigned:
-    name: PlanetaryPositions - Unsigned IPA
+  ephemeris-app-unsigned:
+    name: EphemerisApp - Unsigned IPA
     max_build_duration: 60
     instance_type: mac_mini_m2
 
@@ -19,15 +19,15 @@ workflows:
         script: |
           # Build the app for a generic device (no signing)
           xcodebuild \
-            -project PlanetaryPositions.xcodeproj \
-            -scheme PlanetaryPositions \
+            -project EphemerisApp.xcodeproj \
+            -scheme EphemerisApp \
             -configuration Release \
             -sdk iphoneos \
             -destination "generic/platform=iOS" \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
-            PRODUCT_BUNDLE_IDENTIFIER=com.astrocalc.planetarypositions \
+            PRODUCT_BUNDLE_IDENTIFIER=com.ephemeris.app \
             clean build \
             OBJROOT=$(pwd)/build/obj \
             SYMROOT=$(pwd)/build/sym
@@ -40,12 +40,12 @@ workflows:
           mkdir -p Payload
           cp -r "$APP_PATH" Payload/
 
-          zip -r PlanetaryPositions_unsigned.ipa Payload
+          zip -r EphemerisApp_unsigned.ipa Payload
 
-          echo "IPA created: PlanetaryPositions_unsigned.ipa"
+          echo "IPA created: EphemerisApp_unsigned.ipa"
 
     artifacts:
-      - PlanetaryPositions_unsigned.ipa
+      - EphemerisApp_unsigned.ipa
       - build/sym/**/*.dSYM
 
     publishing:
